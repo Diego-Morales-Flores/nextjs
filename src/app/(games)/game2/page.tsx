@@ -6,11 +6,11 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { When } from "react-if";
-import { useDiceColorGame } from "../../hooks/useDiceColorGame";
-import { ColorToken } from "../../components/ColorToken";
-import { Dice } from "../../components/Dice";
-import { TurtleGrid } from "../../components/TurtleGrid";
-import { GAME_CONFIG } from "../../constants/gameConfig";
+import { useDiceColorGame } from "../../../hooks/useDiceColorGame";
+import { ColorToken } from "../../../components/ColorToken";
+import { Dice } from "../../../components/Dice";
+import { TurtleGrid } from "../../../components/TurtleGrid";
+import { GAME_CONFIG } from "../../../constants/gameConfig";
 
 export default function Game2() {
   const {

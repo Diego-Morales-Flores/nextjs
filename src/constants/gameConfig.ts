@@ -3,11 +3,11 @@ export const GAME_CONFIG = {
   DICE_SIDES: 5,
   COLORS: ["orange", "gray", "blue", "red", "yellow"] as const,
   MESSAGES: {
-    START_GAME: "Start Game",
-    NEW_GAME: "New Game",
-    ROLL_DICE_FIRST: "Roll the dice first!",
-    TRY_AGAIN: "Try again! You need to place a",
-    TOKEN: "token (number",
+    START_GAME: "Comenzar Juego",
+    NEW_GAME: "Nuevo Juego",
+    ROLL_DICE_FIRST: "Lanzar el dado primero!",
+    TRY_AGAIN: "Intenta de nuevo! Necesitas colocar un",
+    TOKEN: "token (número",
   },
 } as const;
 

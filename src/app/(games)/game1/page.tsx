@@ -11,10 +11,10 @@ import {
   SHAPES,
   COLORS,
   colorMap,
-} from "../../hooks/useMathematicalSortingGame";
-import { SortableToken } from "../../components/SortableToken";
-import { DroppableGridCell } from "../../components/DroppableGridCell";
-import { ShapeRenderer } from "../../components/ShapeRenderer";
+} from "../../../hooks/useMathematicalSortingGame";
+import { SortableToken } from "../../../components/SortableToken";
+import { DroppableGridCell } from "../../../components/DroppableGridCell";
+import { ShapeRenderer } from "../../../components/ShapeRenderer";
 
 export default function Game1() {
   const {
