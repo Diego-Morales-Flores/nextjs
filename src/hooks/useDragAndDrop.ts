@@ -30,13 +30,13 @@ export function useDragAndDrop<T extends DragDropItem>(
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        distance: 8,
+        distance: 10,
       },
     }),
     useSensor(TouchSensor, {
       activationConstraint: {
-        delay: 50,
-        tolerance: 15,
+        delay: 100,
+        tolerance: 20,
       },
     })
   );
