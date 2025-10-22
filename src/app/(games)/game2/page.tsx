@@ -11,6 +11,8 @@ import { ColorToken } from "../../../components/ColorToken";
 import { Dice } from "../../../components/Dice";
 import { TurtleGrid } from "../../../components/TurtleGrid";
 import { GAME_CONFIG } from "../../../constants/gameConfig";
+import { twMerge } from "tailwind-merge";
+import useOrientation from "@/hooks/useOrientation";
 
 export default function Game2() {
   const {
@@ -27,6 +29,8 @@ export default function Game2() {
     handleDragEnd,
   } = useDiceColorGame();
 
+  const { isPortrait } = useOrientation();
+
   return (
     <DndContext
       sensors={sensors}
@@ -35,11 +39,16 @@ export default function Game2() {
       onDragEnd={handleDragEnd}
     >
       <div
-        className="min-h-screen bg-[#002759] p-4 max-w-screen max-h-screen overflow-hidden flex flex-col gap-4 h-screen"
+        className="min-h-screen bg-ocean p-4 max-w-screen max-h-screen overflow-hidden flex flex-col gap-4 h-screen"
         style={{ touchAction: "pan-y" }}
       >
         {/* Game Content */}
-        <div className="flex-1 flex gap-4 items-center justify-center h-full">
+        <div
+          className={twMerge(
+            "flex-1 flex gap-4 items-center justify-center",
+            isPortrait ? "flex-col h-fit" : "flex-row h-full"
+          )}
+        >
           {/* Center - Turtle Grid */}
           <TurtleGrid turtleShell={turtleShell} />
 
@@ -52,16 +61,34 @@ export default function Game2() {
                 items={colorTokens.map((token) => token.id)}
                 strategy={verticalListSortingStrategy}
               >
-                <div className="flex flex-col gap-2">
+                <div
+                  className={twMerge(
+                    "flex flex-col gap-2 touch-manipulation",
+                    isPortrait ? "flex-row" : "flex-col"
+                  )}
+                  style={{ touchAction: "none" }}
+                >
                   <Dice
                     value={diceValue}
                     onRoll={rollDice}
                     disabled={!gameStarted || gameComplete}
                   />
                   <div className="bg-white p-4 rounded-lg shadow-lg border-2 border-gray-300 flex flex-col items-center justify-center">
-                    <div className="flex flex-col gap-2">
+                    <div
+                      className={twMerge(
+                        "flex flex-col gap-2 touch-manipulation",
+                        isPortrait ? "flex-row" : "flex-col"
+                      )}
+                      style={{ touchAction: "none" }}
+                    >
                       {colorTokens.map((token, index) => (
-                        <div key={token.id} className="flex items-center gap-2">
+                        <div
+                          key={token.id}
+                          className={twMerge(
+                            "flex items-center gap-2",
+                            isPortrait ? "flex-col-reverse" : "flex-row"
+                          )}
+                        >
                           <ColorToken
                             id={token.id}
                             color={token.color}

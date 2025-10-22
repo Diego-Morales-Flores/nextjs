@@ -1,6 +1,8 @@
 import Image from "next/image";
 import { ColorToken as ColorTokenType } from "../hooks/useDiceColorGame";
 import { TurtleSpot } from "./TurtleSpot";
+import useOrientation from "@/hooks/useOrientation";
+import { twMerge } from "tailwind-merge";
 
 export interface TurtleGridProps {
   turtleShell: (ColorTokenType | null)[];
@@ -22,15 +24,26 @@ const TURTLE_SPOT_POSITIONS = [
 ];
 
 export function TurtleGrid({ turtleShell }: TurtleGridProps) {
+  const { isPortrait } = useOrientation();
   return (
-    <div className="relative size-full flex items-center justify-center flex-1">
-      <div className="relative h-full w-fit">
+    <div
+      className={twMerge(
+        "relative flex items-center justify-center",
+        isPortrait ? "h-fit" : "size-full"
+      )}
+    >
+      <div
+        className={twMerge(
+          "relative h-full w-fit",
+          isPortrait ? "w-full h-fit" : "w-fit h-full"
+        )}
+      >
         <Image
           src="/turtle.svg"
           alt="Turtle"
           width={400}
           height={400}
-          className="h-full !w-fit"
+          className={twMerge(isPortrait ? "w-full !h-fit" : "!w-fit h-full")}
         />
         {TURTLE_SPOT_POSITIONS.map((position, index) => (
           <TurtleSpot

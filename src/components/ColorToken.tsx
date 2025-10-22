@@ -28,6 +28,7 @@ export function ColorToken({
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
+    touchAction: "none",
   };
 
   return (
