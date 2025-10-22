@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useDragAndDrop, DragDropItem } from "./useDragAndDrop";
-import { GAME_CONFIG } from "../constants/gameConfig";
 
 export interface EggItem extends DragDropItem {
   type: "egg";

@@ -44,7 +44,6 @@ export function SortableToken({
       className={`cursor-grab hover:scale-110 transition-transform duration-200 flex items-center justify-center p-3 bg-white rounded-lg border-2 border-gray-300 hover:border-blue-400 hover:shadow-md w-fit h-fit touch-manipulation select-none active:scale-95 ${
         isCurrentlyDragging ? "opacity-50" : ""
       } ${className}`}
-      style={style}
     >
       {onRender ? onRender(isCurrentlyDragging) : children}
     </div>
