@@ -8,6 +8,8 @@ import { Chicken } from "../../../components/Chicken";
 import { Egg } from "../../../components/Egg";
 import { EggStack } from "../../../components/EggStack";
 import { GAME_CONFIG } from "../../../constants/gameConfig";
+import useOrientation from "@/hooks/useOrientation";
+import { twMerge } from "tailwind-merge";
 
 export default function Game3() {
   const {
@@ -23,6 +25,8 @@ export default function Game3() {
     handleDragEnd,
   } = useChickenEggGame();
 
+  const { isPortrait } = useOrientation();
+
   return (
     <DndContext
       sensors={sensors}
@@ -35,7 +39,12 @@ export default function Game3() {
         style={{ touchAction: "pan-y" }}
       >
         {/* Game Content */}
-        <div className="flex-1 flex items-center justify-center h-full gap-8">
+        <div
+          className={twMerge(
+            "flex-1 flex items-center justify-center h-full gap-8",
+            isPortrait ? "flex-col h-fit" : "flex-row h-full"
+          )}
+        >
           {/* Chicken Area */}
           <div className="flex flex-col items-center">
             <Chicken targetCount={targetEggCount} />
@@ -48,7 +57,10 @@ export default function Game3() {
           {/* Egg Collection Area */}
           <When condition={gameStarted && !gameComplete}>
             <div className="flex flex-col items-center gap-4">
-              <div className="flex flex-wrap justify-center gap-3 max-w-md">
+              <div
+                className="flex flex-wrap justify-center gap-3 max-w-md touch-manipulation"
+                style={{ touchAction: "none" }}
+              >
                 {availableEggs.map((egg) => (
                   <Egg key={egg.id} id={egg.id} size="w-12 h-12" />
                 ))}

@@ -14,6 +14,7 @@ export function Egg({ id, size = "w-12 h-12", className = "" }: EggProps) {
 
   const style = {
     transform: CSS.Transform.toString(transform),
+    touchAction: "none",
   };
 
   return (
