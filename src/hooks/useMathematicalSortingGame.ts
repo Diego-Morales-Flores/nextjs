@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useDragAndDrop, DragDropItem } from "./useDragAndDrop";
 import { shuffleArray } from "../utils/arrayUtils";
 
@@ -23,15 +23,87 @@ export const colorMap = {
   blue: "#06b6d4",
 };
 
-export function useMathematicalSortingGame() {
+export function useMathematicalSortingGame(isPortrait: boolean = true) {
   const [gameTokens, setGameTokens] = useState<GameToken[]>([]);
-  const [grid, setGrid] = useState<(GameToken | null)[][]>(
-    Array(3)
-      .fill(null)
-      .map(() => Array(6).fill(null))
-  );
+  const [grid, setGrid] = useState<(GameToken | null)[][]>(() => {
+    // Inicializar grid según orientación
+    if (isPortrait) {
+      // En portrait: filas = colores (6), columnas = formas (3)
+      return Array(COLORS.length)
+        .fill(null)
+        .map(() => Array(SHAPES.length).fill(null));
+    } else {
+      // En landscape: filas = formas (3), columnas = colores (6)
+      return Array(SHAPES.length)
+        .fill(null)
+        .map(() => Array(COLORS.length).fill(null));
+    }
+  });
   const [score, setScore] = useState(0);
   const [gameComplete, setGameComplete] = useState(false);
+  const gridRef = useRef(grid);
+
+  // Actualizar referencia del grid
+  useEffect(() => {
+    gridRef.current = grid;
+  }, [grid]);
+
+  // Re-inicializar grid cuando cambie la orientación
+  useEffect(() => {
+    // Solo re-inicializar si el grid actual no tiene la estructura correcta
+    const currentRows = gridRef.current.length;
+    const currentCols = gridRef.current[0]?.length || 0;
+    
+    if (isPortrait) {
+      // En portrait: filas = colores (6), columnas = formas (3)
+      if (currentRows !== COLORS.length || currentCols !== SHAPES.length) {
+        // Migrar elementos existentes al nuevo grid
+        const newGrid = Array(COLORS.length)
+          .fill(null)
+          .map(() => Array(SHAPES.length).fill(null));
+        
+        // Migrar elementos del grid anterior
+        gridRef.current.forEach((row) => {
+          row.forEach((cell) => {
+            if (cell) {
+              // Encontrar la nueva posición basada en la forma y color
+              const newRow = COLORS.indexOf(cell.color);
+              const newCol = SHAPES.indexOf(cell.shape);
+              if (newRow !== -1 && newCol !== -1 && newGrid[newRow][newCol] === null) {
+                newGrid[newRow][newCol] = cell;
+              }
+            }
+          });
+        });
+        
+        setGrid(newGrid);
+      }
+    } else {
+      // En landscape: filas = formas (3), columnas = colores (6)
+      if (currentRows !== SHAPES.length || currentCols !== COLORS.length) {
+        // Migrar elementos existentes al nuevo grid
+        const newGrid = Array(SHAPES.length)
+          .fill(null)
+          .map(() => Array(COLORS.length).fill(null));
+        
+        // Migrar elementos del grid anterior
+        gridRef.current.forEach((row) => {
+          row.forEach((cell) => {
+            if (cell) {
+              // Encontrar la nueva posición basada en la forma y color
+              const newRow = SHAPES.indexOf(cell.shape);
+              const newCol = COLORS.indexOf(cell.color);
+              if (newRow !== -1 && newCol !== -1 && newGrid[newRow][newCol] === null) {
+                newGrid[newRow][newCol] = cell;
+              }
+            }
+          });
+        });
+        
+        setGrid(newGrid);
+      }
+    }
+  }, [isPortrait]);
 
   // Initialize game tokens
   const initializeTokens = () => {
@@ -44,7 +116,12 @@ export function useMathematicalSortingGame() {
       });
     });
     setGameTokens(shuffleArray(tokens));
-    setGrid(Array(3).fill(null).map(() => Array(6).fill(null)));
+    // Reinicializar grid según orientación actual
+    if (isPortrait) {
+      setGrid(Array(COLORS.length).fill(null).map(() => Array(SHAPES.length).fill(null)));
+    } else {
+      setGrid(Array(SHAPES.length).fill(null).map(() => Array(COLORS.length).fill(null)));
+    }
     setScore(0);
     setGameComplete(false);
   };
@@ -52,6 +129,7 @@ export function useMathematicalSortingGame() {
   // Handle item drop
   const handleItemDrop = (item: DragDropItem, targetId: string): boolean => {
     const gameToken = item as GameToken;
+    
     // Parse target ID (format: "grid-cell-row-col")
     const parts = targetId.split("-");
     if (parts.length < 4 || parts[0] !== "grid" || parts[1] !== "cell") {
@@ -79,8 +157,19 @@ export function useMathematicalSortingGame() {
     }
 
     // Check if the position is correct
-    const correctShape = SHAPES[row];
-    const correctColor = COLORS[col];
+    // La lógica cambia según la orientación
+    let correctShape, correctColor;
+    
+    if (isPortrait) {
+      // En portrait: filas = colores, columnas = formas
+      correctColor = COLORS[row];
+      correctShape = SHAPES[col];
+    } else {
+      // En landscape: filas = formas, columnas = colores
+      correctShape = SHAPES[row];
+      correctColor = COLORS[col];
+    }
+    
     const isCorrect = gameToken.shape === correctShape && gameToken.color === correctColor;
 
     if (isCorrect) {
@@ -106,7 +195,7 @@ export function useMathematicalSortingGame() {
   };
 
   // Handle invalid drop
-  const handleInvalidDrop = (item: DragDropItem) => {
+  const handleInvalidDrop = () => {
     alert("¡Inténtalo de nuevo! Coloca la forma en la fila y columna correctas.");
   };
 

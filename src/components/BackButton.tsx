@@ -12,7 +12,14 @@ export const BackButton = () => {
         "px-3 py-2 rounded-xl transition-all duration-200 border border-amber-200 font-semibold text-base z-20"
       )}
     >
-      <Image src="/arrow.svg" alt="Back" width={20} height={20} />
+      <Image
+        src="/arrow.svg"
+        alt="Back"
+        width={20}
+        height={20}
+        priority
+        loading="eager"
+      />
       <span className="text-sm font-medium">Atrás</span>
     </Link>
   );
