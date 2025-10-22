@@ -16,7 +16,7 @@ export function EggStack({ currentCount, targetCount }: EggStackProps) {
       {/* Stack Area */}
       <div
         ref={setNodeRef}
-        className={`w-32 h-32 border-2 border-dashed rounded-lg flex flex-col items-center justify-center transition-all duration-300 touch-manipulation ${
+        className={`w-32 h-32 border-8 border-dashed rounded-lg flex flex-col items-center justify-center transition-all duration-300 touch-manipulation ${
           isOver
             ? "border-yellow-400 bg-yellow-100/20 scale-105"
             : "border-yellow-300 bg-yellow-50/10"

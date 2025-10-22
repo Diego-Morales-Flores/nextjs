@@ -35,7 +35,7 @@ export default function Game3() {
       onDragEnd={handleDragEnd}
     >
       <div
-        className="min-h-screen bg-amber-100 p-4 max-w-screen max-h-screen overflow-hidden flex flex-col gap-4 h-screen"
+        className="min-h-screen bg-farm bg-opacity-20 p-4 max-w-screen max-h-screen overflow-hidden flex flex-col gap-4 h-screen"
         style={{ touchAction: "pan-y" }}
       >
         {/* Game Content */}

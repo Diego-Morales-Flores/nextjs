@@ -32,3 +32,10 @@ body {
   background-position: center;
   background-repeat: no-repeat;
 }
+
+.bg-farm {
+  background-image: url("/farm.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
