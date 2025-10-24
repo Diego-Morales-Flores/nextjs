@@ -52,8 +52,12 @@ export default function Game1() {
         style={{ touchAction: "pan-y" }}
       >
         {/* Game Grid */}
-        <div className={twMerge(isPortrait ? "w-full h-fit" : "h-full w-full")}>
-          <div className="bg-amber-100 p-4 lg:p-6 rounded-lg shadow-lg border-4 border-amber-800">
+        <div
+          className={twMerge(
+            isPortrait ? "w-full h-fit" : "h-full w-full flex items-center"
+          )}
+        >
+          <div className="bg-amber-100 p-4 lg:p-6 rounded-lg shadow-lg border-4 border-amber-800 w-full">
             <h2 className="text-xl lg:text-2xl font-bold text-center mb-4 text-gray-800">
               Cuadrícula de Juego
             </h2>
@@ -88,7 +92,7 @@ export default function Game1() {
         {/* Token Bank */}
         <div
           className={twMerge(
-            "rounded-lg shadow-lg overflow-hidden min-h-0",
+            "rounded-lg overflow-hidden min-h-0",
             isPortrait ? "h-fit w-fit max-w-full" : "w-[20%] h-fit max-h-full"
           )}
         >

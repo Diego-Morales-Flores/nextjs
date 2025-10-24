@@ -17,6 +17,7 @@ export function useDiceColorGame() {
   );
   const [gameComplete, setGameComplete] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
+  const [diceRolled, setDiceRolled] = useState(false); // New state to track if dice has been rolled
 
   // Initialize game
   const initializeGame = () => {
@@ -31,12 +32,17 @@ export function useDiceColorGame() {
     setGameComplete(false);
     setGameStarted(true);
     setDiceValue(null);
+    setDiceRolled(false);
   };
 
   // Roll dice
   const rollDice = () => {
+    if (diceRolled) {
+      return; // Prevent rolling if dice has already been rolled
+    }
     const newValue = Math.floor(Math.random() * GAME_CONFIG.DICE_SIDES) + 1;
     setDiceValue(newValue);
+    setDiceRolled(true);
   };
 
   // Handle item drop on turtle shell
@@ -84,6 +90,7 @@ export function useDiceColorGame() {
 
       // Reset dice for next turn
       setDiceValue(null);
+      setDiceRolled(false);
       return true;
     }
 
@@ -112,6 +119,7 @@ export function useDiceColorGame() {
   return {
     // Game state
     diceValue,
+    diceRolled,
     colorTokens,
     turtleShell,
     gameComplete,

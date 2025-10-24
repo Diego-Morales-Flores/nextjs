@@ -17,6 +17,7 @@ import useOrientation from "@/hooks/useOrientation";
 export default function Game2() {
   const {
     diceValue,
+    diceRolled,
     colorTokens,
     turtleShell,
     gameComplete,
@@ -71,7 +72,7 @@ export default function Game2() {
                   <Dice
                     value={diceValue}
                     onRoll={rollDice}
-                    disabled={!gameStarted || gameComplete}
+                    disabled={!gameStarted || gameComplete || diceRolled}
                   />
                   <div className="bg-white p-4 rounded-lg shadow-lg border-2 border-gray-300 flex flex-col items-center justify-center">
                     <div
