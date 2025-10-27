@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useDragAndDrop, DragDropItem } from "./useDragAndDrop";
+import { useNotification } from "../contexts/NotificationContext";
 import { GAME_CONFIG, COLOR_MAP, NUMBER_TO_COLOR_MAP } from "../constants/gameConfig";
 
 export type Color = keyof typeof COLOR_MAP;
@@ -18,6 +19,9 @@ export function useDiceColorGame() {
   const [gameComplete, setGameComplete] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
   const [diceRolled, setDiceRolled] = useState(false); // New state to track if dice has been rolled
+  
+  // Notification system
+  const { showSuccess, showError } = useNotification();
 
   // Initialize game
   const initializeGame = () => {
@@ -86,6 +90,7 @@ export function useDiceColorGame() {
       // Check if game is complete (all spots filled)
       if (newTurtleShell.every(spot => spot !== null)) {
         setGameComplete(true);
+        showSuccess("¡Juego completado! ¡Excelente trabajo!", undefined, true);
       }
 
       // Reset dice for next turn
@@ -100,10 +105,10 @@ export function useDiceColorGame() {
   // Handle invalid drop
   const handleInvalidDrop = () => {
     if (diceValue === null) {
-      alert(GAME_CONFIG.MESSAGES.ROLL_DICE_FIRST);
+      showError(GAME_CONFIG.MESSAGES.ROLL_DICE_FIRST, 500);
     } else {
       const expectedColor = NUMBER_TO_COLOR_MAP[diceValue];
-      alert(`${GAME_CONFIG.MESSAGES.TRY_AGAIN} ${expectedColor} ${GAME_CONFIG.MESSAGES.TOKEN} ${diceValue}).`);
+      showError(`${GAME_CONFIG.MESSAGES.TRY_AGAIN} ${expectedColor} ${GAME_CONFIG.MESSAGES.TOKEN} ${diceValue}).`, 500);
     }
   };
 

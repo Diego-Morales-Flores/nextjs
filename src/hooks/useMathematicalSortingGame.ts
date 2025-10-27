@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useDragAndDrop, DragDropItem } from "./useDragAndDrop";
+import { useNotification } from "../contexts/NotificationContext";
 import { shuffleArray } from "../utils/arrayUtils";
 
 export type Shape = "circle" | "square" | "triangle";
@@ -25,6 +26,10 @@ export const colorMap = {
 
 export function useMathematicalSortingGame(isPortrait: boolean = true) {
   const [gameTokens, setGameTokens] = useState<GameToken[]>([]);
+  
+  // Notification system
+  const { showSuccess, showError } = useNotification();
+  
   const [grid, setGrid] = useState<(GameToken | null)[][]>(() => {
     // Inicializar grid según orientación
     if (isPortrait) {
@@ -186,6 +191,7 @@ export function useMathematicalSortingGame(isPortrait: boolean = true) {
       const remainingTokens = gameTokens.filter((t) => t.id !== gameToken.id);
       if (remainingTokens.length === 0) {
         setGameComplete(true);
+        showSuccess("¡Excelente! Has completado el juego de clasificación.", undefined, true);
       }
 
       return true;
@@ -196,7 +202,7 @@ export function useMathematicalSortingGame(isPortrait: boolean = true) {
 
   // Handle invalid drop
   const handleInvalidDrop = () => {
-    alert("¡Inténtalo de nuevo! Coloca la forma en la fila y columna correctas.");
+    showError("¡Ahi no va!", 500);
   };
 
   // Use the drag and drop hook

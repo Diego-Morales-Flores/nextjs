@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useDragAndDrop, DragDropItem } from "./useDragAndDrop";
+import { useNotification } from "../contexts/NotificationContext";
 
 export interface EggItem extends DragDropItem {
   type: "egg";
@@ -11,6 +12,9 @@ export function useChickenEggGame() {
   const [gameComplete, setGameComplete] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
   const [availableEggs, setAvailableEggs] = useState<EggItem[]>([]);
+  
+  // Notification system
+  const { showSuccess, showError } = useNotification();
 
   // Initialize game
   const initializeGame = () => {
@@ -39,7 +43,7 @@ export function useChickenEggGame() {
     }
 
     // Remove egg from available eggs
-    setAvailableEggs(prev => prev.filter(egg => egg.id !== item.id));
+    setAvailableEggs((prev: EggItem[]) => prev.filter((egg: EggItem) => egg.id !== item.id));
 
     // Add egg to stack
     setCurrentEggCount(prev => {
@@ -48,6 +52,7 @@ export function useChickenEggGame() {
       // Check if game is complete
       if (newCount >= targetEggCount) {
         setGameComplete(true);
+        showSuccess("¡Excelente! Has completado el juego de huevos.", undefined, true);
       }
       
       return newCount;
@@ -59,9 +64,9 @@ export function useChickenEggGame() {
   // Handle invalid drop
   const handleInvalidDrop = () => {
     if (currentEggCount >= targetEggCount) {
-      console.warn("Game already complete - chicken has enough eggs");
+      showError("¡El juego ya está completo! No necesitas más huevos.", 500);
     } else {
-      console.warn("Invalid drop location - drop eggs in the stack area");
+      showError("¡Coloca los huevos en el área de la gallina!", 500);
     }
   };
 
